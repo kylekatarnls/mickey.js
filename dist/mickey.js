@@ -525,18 +525,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	function axisReflect(box, dir, center) {
 	  switch (dir) {
 	    case 'up':
-	      box._r.top = box._r.top + 2 * center.y;
+	      box._r.top += 2 * center.y;
 	      break;
 	    case 'down':
-	      box._r.top = box._r.top - 2 * center.y;
+	      box._r.top -= 2 * center.y;
 	      break;
 	    case 'left':
-	      box._r.left = box._r.left + 2 * center.x;
+	      box._r.left += 2 * center.x;
 	      break;
 	    case 'right':
-	      box._r.left = box._r.left - 2 * center.x;
-	      break;
-	    default:
+	      box._r.left -= 2 * center.x;
 	      break;
 	  }
 	  return box;
@@ -572,24 +570,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	function createBox(el, overlap) {
 	  if (!el || !el.getBoundingClientRect)
 	    return;
-	  var BoundingRect = el.getBoundingClientRect(),
-	      r = {
-	        top: BoundingRect.top,
-	        bottom: BoundingRect.bottom,
-	        height: BoundingRect.height,
-	        width: BoundingRect.width,
-	        left: BoundingRect.left,
-	        right: BoundingRect.right
-	      };
-	  if (r.height > 0 || r.width > 0) {
-	    if (overlap) {
-	      r.height = r.height - 2 * overlap;
-	      r.width = r.width - 2 * overlap;
-	      r.top = r.top + overlap;
-	      r.left = r.left + overlap;
-	      r.right = r.right - overlap;
-	      r.bottom = r.bottom - overlap;
-	    }
+	  var BoundingRect = el.getBoundingClientRect();
+	  if (BoundingRect.height > 0 || BoundingRect.width > 0) {
+	    overlap |= 0;
+	    var r = {
+	      top: BoundingRect.top + overlap,
+	      bottom: BoundingRect.bottom - overlap,
+	      height: BoundingRect.height - 2 * overlap,
+	      width: BoundingRect.width - 2 * overlap,
+	      left: BoundingRect.left + overlap,
+	      right: BoundingRect.right - overlap
+	    };
 	    return new Box(el, r);
 	  }
 	}
